@@ -63,24 +63,36 @@ pub fn main() {
         }
         i = (i + 1) % 255;
 
-        canvas.set_draw_color(Color::RGB(i, 0, 255 - i));
-        canvas.clear();
        
         // Event handler and paddle_handler for moving paddles
         event_handler(&mut event_pump, &mut down,&mut up,&mut running, &mut RU, &mut RD);
         paddle_handler(&mut left_paddle, &mut right_paddle, up, down, RU, RD);
 
+
+
+
+
+
+        canvas.copy(&texture, None, tst);
+        renderer(i, &mut canvas, left_paddle.rect, right_paddle.rect);
         // Set background, draw both paddles, then present buffer, sleep for duration, then re run
         // loop if running variable still true
-       canvas.set_draw_color(Color::RGB(i,i,i));
-        canvas.fill_rect(left_paddle.rect).unwrap();
-        canvas.fill_rect(right_paddle.rect).unwrap();
-        canvas.copy(&texture, None, tst);
-        canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 }
 
+
+fn renderer(i: u8, canvas: &mut sdl2::render::Canvas<sdl2::video::Window>, left_rect: Rect, right_rect: Rect){
+    canvas.set_draw_color(Color::RGB(i, 0, 255 - i));
+    canvas.clear();
+
+
+
+    canvas.set_draw_color(Color::RGB(i,i,i));
+    canvas.fill_rect(left_rect).unwrap();
+    canvas.fill_rect(right_rect).unwrap();
+    canvas.present();
+}
 
 
 fn event_handler(event_pump:&mut sdl2::EventPump, down: &mut bool, up: &mut bool, running: &mut bool, RU: &mut bool, RD: &mut bool) {
