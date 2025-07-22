@@ -10,6 +10,10 @@ mod paddle;
 use crate::paddle::Direction;
 
 
+
+use sdl2::image::{self, LoadTexture, InitFlag};
+mod ball;
+
 pub fn main() {
 
     // Set up window, set context and set up canvas for rendering
@@ -17,6 +21,13 @@ pub fn main() {
     let video_subsystem = sdl_context.video().unwrap();
     let window = video_subsystem.window("Rust Pong", 800, 600).position_centered().build().unwrap();
     let mut canvas = window.into_canvas().build().unwrap();
+
+
+
+    let _image_context = image::init(InitFlag::PNG | InitFlag::JPG);
+    let texture_creator = canvas.texture_creator();
+    let texture = texture_creator.load_texture("../../assets/Poke.png").unwrap();
+
 
     // Set background color, clear buffer and present new buffer
     canvas.set_draw_color(Color::RGB(0,255,255));
@@ -42,6 +53,9 @@ pub fn main() {
     let mut running = true;
 
 
+    let mut tst = Rect::new(400, 100, 100, 100);
+
+
     // Main rendering loop
     'running: loop {
         if !running {
@@ -56,9 +70,12 @@ pub fn main() {
         event_handler(&mut event_pump, &mut down,&mut up,&mut running, &mut RU, &mut RD);
         paddle_handler(&mut left_paddle, &mut right_paddle, up, down, RU, RD);
 
+        // Set background, draw both paddles, then present buffer, sleep for duration, then re run
+        // loop if running variable still true
        canvas.set_draw_color(Color::RGB(i,i,i));
         canvas.fill_rect(left_paddle.rect).unwrap();
         canvas.fill_rect(right_paddle.rect).unwrap();
+        canvas.copy(&texture, None, tst);
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
