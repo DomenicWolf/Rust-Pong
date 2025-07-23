@@ -15,10 +15,11 @@ pub enum Direction {
 
 // Paddle struct, bounds and rect object
 pub struct Paddle {
-    left : i32,
-    right: i32,
-    top: i32,
-    bottom: i32,
+
+    pub left : i32,
+    pub right: i32,
+    pub top: i32,
+    pub bottom: i32,
 
     pub rect: Rect,
 }
@@ -30,6 +31,7 @@ impl Paddle {
 
 
 
+    // Sets out bound of paddle based on x and y value, then sets dimension
     pub fn new(x:i32, y:i32, h:i32, w:i32) -> Self{
       
         Self{
@@ -42,6 +44,7 @@ impl Paddle {
 
     }
 
+    // Check to see if direction enum type matches, move paddle in given direction
     pub fn slide(&mut self, direction: Direction){
 
         match direction {
