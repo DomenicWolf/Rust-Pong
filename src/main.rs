@@ -37,9 +37,9 @@ pub fn main() {
 
 
     // Creating left and right paddle based on class
-    let mut left_paddle = paddle::Paddle::new(100,100,50,200); 
-    let mut right_paddle = paddle::Paddle::new(650, 100,50,200);
-    let mut ball = ball::Ball::new(400,100,150,100);
+    let mut left_paddle = paddle::Paddle::new(100,100,75,200); 
+    let mut right_paddle = paddle::Paddle::new(650, 100,75,200);
+    let mut ball = ball::Ball::new(400,100,100,50);
 
     // Bools for direction for each paddle, as well as bool for running rendering loop
     let mut down = false;
