@@ -16,13 +16,6 @@ pub enum Direction {
 // Paddle struct, bounds and rect object
 pub struct Paddle {
 
-    pub left : i32,
-    pub right: i32,
-    pub top: i32,
-    pub bottom: i32,
-
-    h: i32,
-    w: i32,
     pub rect: Rect,
 }
 
@@ -37,12 +30,7 @@ impl Paddle {
     pub fn new(x:i32, y:i32, w:i32, h:i32) -> Self{
       
         Self{
-            left: x - (w/2),
-            right: x + (w/2),
-            top: y - (h/2),
-            bottom: y + (h/2),
-            h:h,
-            w:w,
+            
             rect: Rect::new(x,y,w as u32, h as u32)
         }
 
@@ -53,15 +41,10 @@ impl Paddle {
 
         match direction {
             Direction::Up => {
-
-                self.rect.y = self.rect.y - 10;
-                self.top = self.rect.y - (self.h/2);
-                self.bottom = self.rect.y + (self.h/2);
+                self.rect.set_y(self.rect.y - 10);
             },
             Direction::Down => {
-                self.rect.y = self.rect.y + 10;
-                self.top = self.rect.y - (self.h/2);
-                self.bottom = self.rect.y + (self.h/2);
+                self.rect.set_y(self.rect.y + 10) 
             },
             _ => {}
         }
