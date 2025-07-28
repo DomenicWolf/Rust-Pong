@@ -17,6 +17,8 @@ pub enum Direction {
 pub struct Paddle {
 
     pub rect: Rect,
+    pub scr_h: i32,
+    pub scr_w: i32
 }
 
 
@@ -27,10 +29,11 @@ impl Paddle {
 
 
     // Sets out bound of paddle based on x and y value, then sets dimension
-    pub fn new(x:i32, y:i32, w:i32, h:i32) -> Self{
+    pub fn new(x:i32, y:i32, w:i32, h:i32, sc_h: i32, sc_w: i32) -> Self{
       
         Self{
-            
+            scr_h: sc_h,
+            scr_w: sc_w,
             rect: Rect::new(x,y,w as u32, h as u32)
         }
 
@@ -41,10 +44,16 @@ impl Paddle {
 
         match direction {
             Direction::Up => {
-                self.rect.set_y(self.rect.y - 10);
+                if self.rect.top() - 10 > 0 {
+
+                    self.rect.set_y(self.rect.y - 10);
+                }
             },
             Direction::Down => {
-                self.rect.set_y(self.rect.y + 10) 
+                if self.rect.bottom() + 10 < self.scr_h {
+
+                    self.rect.set_y(self.rect.y + 10);
+                }
             },
             _ => {}
         }

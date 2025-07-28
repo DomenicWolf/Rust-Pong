@@ -37,9 +37,9 @@ pub fn main() {
 
 
     // Creating left and right paddle based on class
-    let mut left_paddle = paddle::Paddle::new(100,100,75,200); 
-    let mut right_paddle = paddle::Paddle::new(650, 100,75,200);
-    let mut ball = ball::Ball::new(400,100,100,50);
+    let mut left_paddle = paddle::Paddle::new(100,100,75,200, canvas.viewport().h, canvas.viewport().w); 
+    let mut right_paddle = paddle::Paddle::new(650, 100,75,200, canvas.viewport().h, canvas.viewport().w);
+    let mut ball = ball::Ball::new(400,100,100,50, canvas.viewport().h, canvas.viewport().w);
 
     // Bools for direction for each paddle, as well as bool for running rendering loop
     let mut down = false;
@@ -52,7 +52,6 @@ pub fn main() {
     // Texture creator and texture for ball
     let texture_creator = canvas.texture_creator();
     let texture = texture_creator.load_texture("../../assets/Poke.png").unwrap();
-
 
     let mut i = 0;
 
