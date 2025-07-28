@@ -19,6 +19,8 @@ pub struct Ball {
     pub rect: Rect,
     pub h_dir: Direction,
     pub v_dir: Direction,
+    pub v_v: i32,
+    pub h_v: i32
 }
 
 impl Ball {
@@ -29,6 +31,8 @@ impl Ball {
             rect: Rect::new(x,y,w as u32, h as u32),
             h_dir: Direction::Left,
             v_dir: Direction::Up,
+            h_v: 3,
+            v_v: 0,
         }
 
 
@@ -64,10 +68,12 @@ impl Ball {
     pub fn collision_check(&mut self, left_paddle: &Paddle, right_paddle: &Paddle){
         let h = self.h_dir;
         let v = self.v_dir;
+        let vv = self.v_v;
+        let hv = self.h_v;
 
 //        println!(" Ball top {}",self.top); 
  //       println!(" Ball bottom {}", self.bottom);
-        self.shift(&h, &v, 0, 5);
+        self.shift(&h, &v, vv, hv);
         println!("BEGIN");
 
         println!("Ball rect: {}", self.rect.x);
@@ -82,6 +88,10 @@ impl Ball {
 
 
         if left_paddle.rect.right() - 20 > self.rect.left() && (left_paddle.rect.top() <= self.rect.top() && left_paddle.rect.bottom() >= self.rect.bottom())  {
+            if (self.rect.top() - left_paddle.rect.top()) <=  50 {
+                self.h_v = 5;
+                self.v_v = 3;
+            }
             println!("tesasdasdasdasdasdasdasdasdasdasdasdasdt");
             self.h_dir = Direction::Right;
             self.v_dir = Direction::Down;
