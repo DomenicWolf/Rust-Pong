@@ -13,7 +13,7 @@ pub enum Direction {
 }
 
 
-// Paddle struct, bounds and rect object
+// Paddle struct, screen height and width and rect object
 pub struct Paddle {
 
     pub rect: Rect,
@@ -28,7 +28,7 @@ impl Paddle {
 
 
 
-    // Sets out bound of paddle based on x and y value, then sets dimension
+    // Simple constructor
     pub fn new(x:i32, y:i32, w:i32, h:i32, sc_h: i32, sc_w: i32) -> Self{
       
         Self{
@@ -42,6 +42,7 @@ impl Paddle {
     // Check to see if direction enum type matches, move paddle in given direction
     pub fn slide(&mut self, direction: Direction){
 
+        // Also check to make sure paddle does not go outside screen height bounds
         match direction {
             Direction::Up => {
                 if self.rect.top() - 10 > 0 {
@@ -57,12 +58,6 @@ impl Paddle {
             },
             _ => {}
         }
-/*
-        println!("Top {}", self.top);
-        println!("Bottom {}", self.bottom);
-        println!("Left {}", self.left);
-        println!("Right {}", self.right);
-        println!("Rect.x {} -- Rect.y {}", self.rect.x, self.rect.y);
-*/
+
     }
 }

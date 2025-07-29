@@ -4,6 +4,8 @@ use sdl2::rect::Rect;
 
 use crate::paddle::Paddle;
 
+// Simple direction enum, needed copy function for some reason (rust is weird, I forget exactly but
+// I think I needed it when I started passing the direction to a function...)
 #[derive(Copy, Clone, Debug)]
 pub enum Direction {
     Up, 
@@ -13,7 +15,8 @@ pub enum Direction {
 }
 
 
-// Ball struct has outer bound and a rect for position
+// Ball struct has rect, horizontal and vertical direction as well as velocity
+// Also has screen height and width as well as bool for left and right paddle being hit
 pub struct Ball {
 
     pub rect: Rect,
@@ -30,7 +33,8 @@ pub struct Ball {
 
 impl Ball {
 
-    // Set the outer bound of ball based on x and y, then set dimension
+    // Create rect to place image on, store horizontal and vertical direction and velocity.
+    // Store screen height and width, and bools for left paddle hit or right paddle hit
     pub fn new(x: i32, y: i32, w: i32, h:i32, sc_h: i32, sc_w: i32) -> Self {
         Self{
             rect: Rect::new(x,y,w as u32, h as u32),
@@ -49,6 +53,9 @@ impl Ball {
 
     }
 
+
+    // Shift function to move ball, check to see if ball has gone off side first
+    
     pub fn shift(&mut self, h: &Direction, v: &Direction, v_velocity: i32, h_velocity: i32){
 
         
@@ -60,6 +67,7 @@ impl Ball {
 
 
 
+    // Next two matches, one to check vertical direction and other to check horizontal
         match h{
 
             Direction::Left => {
@@ -71,7 +79,8 @@ impl Ball {
            },
             _ => {}
         }
-
+    // Also check to see if ball has gone too far down or up, and simply rerverse vertical
+    // direction
         match v {
 
             Direction::Up => {
@@ -96,38 +105,30 @@ impl Ball {
 
     }
 
+    // Collision check for each paddle
     pub fn collision_check(&mut self, left_paddle: &Paddle, right_paddle: &Paddle){
         let h = self.h_dir;
         let v = self.v_dir;
         let vv = self.v_v;
         let hv = self.h_v;
 
+
+        // This is where shift for the ball is called each frame, should change later
         self.shift(&h, &v, vv, hv);
 
-
-/*
-        println!("BEGIN");
-
-        println!("Ball rect: {}", self.rect.x);
-        println!("Ball right : {}", self.rect.right());       
-        println!("Ball top : {}", self.rect.top());       
-        println!("Ball bottom : {}", self.rect.bottom());       
-        
-        println!("Paddle left : {}", right_paddle.rect.left());
-        
-        println!("Paddle top : {}", right_paddle.rect.top());
-        println!("Paddle bottom : {}", right_paddle.rect.bottom());
-*/ 
-        
-        println!("paddle {}", left_paddle.rect.right());
-        println!("ball {}", self.rect.left());
+       
+        // Make sure ball has hit paddle and paddle has not yet been hit (to avoid double hit which
+        // can change direction twice)
         if left_paddle.rect.right() - 20 > self.rect.left() && (left_paddle.rect.top() <= self.rect.top() && left_paddle.rect.bottom() >= self.rect.bottom() && !self.left_hit && (left_paddle.rect.left() < self.rect.left()) )  {
 
 
+            // Will be called each hit no matter where hit occured
             self.h_dir = Direction::Right;
             self.left_hit = true;
             self.right_hit = false;
 
+
+            // Temporary checks to see area of paddle hit, which changes angle
             if (self.rect.top() - left_paddle.rect.top()) <=  50 {
                 self.h_v = 5;
                 self.v_v = 3;
@@ -143,6 +144,7 @@ impl Ball {
 
 
         } 
+        // Same as left but for right paddle
          if right_paddle.rect.left() + 20 < self.rect.right() && (right_paddle.rect.top() <= self.rect.top() && right_paddle.rect.bottom() >= self.rect.bottom() && !self.right_hit)  {
 
             self.right_hit = true;

@@ -62,6 +62,8 @@ pub fn main() {
         }
         i = (i + 1) % 255;
 
+
+        // Call ball collision_check every iteration, might change later
         ball.collision_check(&left_paddle, &right_paddle);
        
         // Event handler and paddle_handler for moving paddles
@@ -71,6 +73,7 @@ pub fn main() {
         // Pass in paddle and ball rects along with canvas to be rendered
         renderer(i, &mut canvas, left_paddle.rect, right_paddle.rect, ball.rect, &texture);
 
+        // Sleep
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 }
